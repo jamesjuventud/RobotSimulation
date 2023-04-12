@@ -32,12 +32,9 @@ TableRobot::~TableRobot()
 {
 	if (direction)
 	{
-		//std::cout << "TableRobot object destroyed!" << std::endl;
 		delete direction;
 		direction = nullptr;
 	}
-
-	//std::cout << "TableRobot object destroyed!!" << std::endl;
 }
 
 
@@ -51,7 +48,6 @@ uint8_t TableRobot::ParseInputCoordinates_XY(RobotString &command, int& x_coordi
 		// Check the first char if it's comma.
 		if (command[0] != delim_comma)
 		{
-			//std::cout << "Invalid place command format. Expecting a comma." << std::endl;
 			execute_result = ROBOT_CODE_INVALID_DELIMETER;
 		}
 		else {
@@ -84,7 +80,6 @@ int TableRobot::GetFirstNumberOccurence(RobotString & remove_place_str, int & nu
 		}
 		else if (!isdigit(remove_place_str[i]) && found_X == false)
 		{
-			//std::cout << "Invalid place command format. Expecting a number." << std::endl;
 			result = ROBOT_CODE_INVALID_COORDINATES;
 			break;
 		}
@@ -110,7 +105,6 @@ int TableRobot::GetFirstNumberOccurence(RobotString & remove_place_str, int & nu
 		number = std::stoi(temp.c_str());		
 	}
 	else {
-		//std::cout << "Invalid place command format. Expecting a number." << std::endl;
 		result = ROBOT_CODE_INVALID_COORDINATES;
 	}
 
@@ -171,14 +165,11 @@ uint8_t TableRobot::CommandParser(RobotString& command, RobotCommandRequest& cmd
 		
 		if (Compare(token, const_cast<RobotString&>(scPLACE)) != 0) 
 		{
-			//std::cout << "Invalid command." << std::endl;
 			execute_result = ROBOT_CODE_INVALID_COMMAND;
 			return execute_result;
 		}
 		else 
 		{
-			//std::cout << "PLACE CMD " << strlen(scPLACE.c_str())  << std::endl;
-
 			// Copy the characters after the PLACE string.
 			command = command.substr(5, command.size());
 
@@ -198,13 +189,11 @@ uint8_t TableRobot::CommandParser(RobotString& command, RobotCommandRequest& cmd
 					is_coordinate_valid = robot_coordinate.CheckCoordinateValidity_Y(y_coordinate);
 					if (!is_coordinate_valid)
 					{
-						//std::cout << "Invalid input y-axis coordinate." << std::endl;
 						execute_result = ROBOT_CODE_BEYOND_Y_AXIS_COORDINATE;
 						return execute_result;
 					}
 				}
 				else {
-					//std::cout << "Invalid input x-axis coordinate." << std::endl;
 					execute_result = ROBOT_CODE_BEYOND_X_AXIS_COORDINATE;
 					return execute_result;
 				}
@@ -212,7 +201,6 @@ uint8_t TableRobot::CommandParser(RobotString& command, RobotCommandRequest& cmd
 				// Check the first character if it's comma.
 				if (command[0] != delim_comma)
 				{
-					//std::cout << "Invalid place command format. Expecting a comma." << std::endl;
 					execute_result = ROBOT_CODE_INVALID_DELIMETER;
 					return execute_result;
 				}
@@ -228,7 +216,6 @@ uint8_t TableRobot::CommandParser(RobotString& command, RobotCommandRequest& cmd
 				// Check the direction string input.
 				if (!direction->IsDirectionValid(direction_value))
 				{
-					//std::cout << "Invalid place command format. Expecting a direction - e.g. NORTH,EAST,SOUTH,WEST." << std::endl;
 					execute_result = ROBOT_CODE_INVALID_DIRECTION;
 					return execute_result;
 				}
@@ -293,8 +280,6 @@ uint8_t TableRobot::RobotMoveCommand(RobotRequestPosition &position)
 	int robot_coordinate_Y = robot_coordinate.GetRobotCoordinate_Y();
 	uint8_t robot_facing = direction->GetRobotDirection();
 
-	//std::cout << "Current Pos: " << robot_coordinate_X << "," << robot_coordinate_Y << "," << direction->ConvertRobotDirectionToString(robot_facing) << std::endl;
-
 	switch (robot_facing)
 	{
 	case robot_direction.NORTH:
@@ -321,7 +306,6 @@ uint8_t TableRobot::RobotMoveCommand(RobotRequestPosition &position)
 		// Update the X and Y coordinate.
 		RobotString direction_str = direction->ConvertRobotDirectionToString(robot_facing);
 		robot_coordinate.SetRobotCoordinate_XY(robot_coordinate_X, robot_coordinate_Y);
-		//std::cout << "New Pos: " << robot_coordinate_X << "," << robot_coordinate_Y << "," << direction_str << std::endl;
 
 		// Update the position referenced data.
 		position.coordinate_X = robot_coordinate_X;
@@ -329,7 +313,6 @@ uint8_t TableRobot::RobotMoveCommand(RobotRequestPosition &position)
 		position.direction = direction_str;
 	}
 	else {
-		//std::cout << "Command has been rejected. Robot will fall." << std::endl;
 		result = ROBOT_CODE_WILL_FALL;
 	}
 
@@ -347,12 +330,9 @@ void TableRobot::RobotRotationCommand(const uint8_t& rotate) const
 	{
 		direction->TurnRight();
 	}
-	else {
-		//std::cout << "Unsupported rotation command." << std::endl;
-	}
+	else {}
 	
 	uint8_t robot_facing = direction->GetRobotDirection();
-	//std::cout << "New Pos: " << robot_coordinate.GetRobotCoordinate_X() << "," << robot_coordinate.GetRobotCoordinate_Y() << "," << direction->ConvertRobotDirectionToString(robot_facing) << std::endl;
 }
 
 
@@ -377,7 +357,6 @@ uint8_t TableRobot::ExecuteCmd(RobotCommandRequest & command_request, RobotReque
 	// Only PLACE command is valid if robot is not on the table yet.
 	if (command_request.command != ROBOT_PLACE_COMMAND && !isOnTable)
 	{
-		//std::cout << "The robot is not on the table. Try PLACE command." << std::endl;
 		execute_result = ROBOT_CODE_IS_NOT_ON_TABLE;
 	}
 	else {
@@ -399,7 +378,6 @@ uint8_t TableRobot::ExecuteCmd(RobotCommandRequest & command_request, RobotReque
 			RobotReportCommand(position);
 			break;
 		default:
-			//std::cout << "Unsupported command." << std::endl;
 			execute_result = ROBOT_CODE_INVALID_COMMAND;
 			break;
 		}

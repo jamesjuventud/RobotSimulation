@@ -33,8 +33,6 @@ int main(int argc, const char * argv[])
 			{
 				std::cout << "Return Code = " << (uint16_t)return_code << " (" << ConvertErrorCodeToString(return_code) << ")" << std::endl;
 			}
-			
-			//std::cout << "Return Code = " << (uint16_t)return_code << "   " << "Callback: " << pos_request.coordinate_X << "," << pos_request.coordinate_Y << "," << pos_request.direction << std::endl;
 		}
 	}
 
