@@ -11,6 +11,7 @@ https://github.com/jamesjuventud/RobotSimulation.git
 # Dependecies
 1. Python 3.9.6     
 2. CMake 3.21.1   
+3. MSVC 2017 C++ Compiler
 
 # To build the code:    
 1. Navigate to the directory file and open cmd.     
